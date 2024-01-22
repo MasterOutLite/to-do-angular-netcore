@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.128-alpha">
+  <PropertyGroup>
+    <StartupCommand>npm start</StartupCommand>
+    <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
+    <!-- Allows the build (or compile) script located on package.json to run on Build -->
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Folder where production build objects will be placed -->
+    <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist\to-do-angular-netcore.client\</PublishAssetsDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\app\components\RenderToDo\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\components\RenderToDo\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\app\components\" />
+  </ItemGroup>
+</Project>
