@@ -70,9 +70,14 @@ namespace to_do_angular_netcore.Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ToDo");
                 });
@@ -113,12 +118,25 @@ namespace to_do_angular_netcore.Server.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("to_do_angular_netcore.Server.Models.User", "User")
+                        .WithMany("toDos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("to_do_angular_netcore.Server.Models.Category", b =>
                 {
                     b.Navigation("ToDos");
+                });
+
+            modelBuilder.Entity("to_do_angular_netcore.Server.Models.User", b =>
+                {
+                    b.Navigation("toDos");
                 });
 #pragma warning restore 612, 618
         }

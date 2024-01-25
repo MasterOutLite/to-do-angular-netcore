@@ -15,5 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\app\components\" />
+    <Folder Include="src\app\type\" />
   </ItemGroup>
 </Project>

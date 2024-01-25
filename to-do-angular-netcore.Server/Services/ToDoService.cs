@@ -14,35 +14,47 @@ namespace to_do_angular_netcore.Server.Services
             _repository = repository;
         }
 
-        public async Task<long> Create (ToDo dto)
+        public async Task<long> Create (ToDo dto, long userId)
         {
-            Category category = await _repository.Get<Category>(o => o.Id == dto.CategoryId).FirstOrDefaultAsync()
+            Category category = await _repository.Get<Category>(o => o.Id == dto.CategoryId)
+                .FirstOrDefaultAsync()
                 ?? throw new NotFoundException("CategoryId is bad");
+            dto.UserId = userId;
             long id = await _repository.Add(dto);
             await _repository.SaveChangesAsync();
             return id;
         }
 
-        public async Task Delete (long id)
+        public async Task Delete (long id, long userId)
         {
+            await GetById(id, userId);
             await _repository.Delete<ToDo>(id);
             await _repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ToDo>> GetAll ()
+        public async Task<IEnumerable<ToDo>> GetAll (long userId)
         {
-            return await _repository.Get<ToDo>().ToListAsync();
+            return await _repository.Get<ToDo>(e => e.UserId == userId)
+                .Include(i => i.Category)
+                .OrderBy(o => o.Id).ToListAsync();
         }
 
-        public async Task<ToDo> GetById (long id)
+        public async Task<ToDo> GetById (long id, long userId)
         {
-            return await _repository.Get<ToDo>(o => o.Id == id).FirstOrDefaultAsync()
+            return await _repository.Get<ToDo>(o => o.Id == id && o.UserId == userId)
+                .Include(o => o.Category)
+                .FirstOrDefaultAsync()
                 ?? throw new NotFoundException($"Not found ToDo by id:{id}");
         }
 
-        public async Task Update (ToDo dto)
+        public async Task Update (ToDo dto, long userId)
         {
-            Category categor = await _repository.Get<Category>(o => o.Id == dto.CategoryId).FirstOrDefaultAsync()
+            if (dto.UserId != userId)
+            {
+                throw new ArgumentException("UserId is bad");
+            }
+            Category categor = await _repository.Get<Category>(o => o.Id == dto.CategoryId)
+                .FirstOrDefaultAsync()
                 ?? throw new NotFoundException("CategoryId is bad");
             _repository.Update(dto);
             await _repository.SaveChangesAsync();

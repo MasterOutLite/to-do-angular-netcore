@@ -1,4 +1,6 @@
-﻿namespace to_do_angular_netcore.Server.Dto.ToDo
+﻿using to_do_angular_netcore.Server.Dto.Category;
+
+namespace to_do_angular_netcore.Server.Dto.ToDo
 {
     public class ToDoDto
     {
@@ -7,5 +9,6 @@
         public string Description { get; set; }
         public bool Done { get; set; }
         public long CategoryId { get; set; }
+        public CategoryDto Category { get; set; }
     }
 }

@@ -52,6 +52,7 @@ namespace to_do_angular_netcore.Server.Data.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     Done = table.Column<bool>(type: "boolean", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -63,12 +64,23 @@ namespace to_do_angular_netcore.Server.Data.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ToDo_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ToDo_CategoryId",
                 table: "ToDo",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ToDo_UserId",
+                table: "ToDo",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -78,10 +90,10 @@ namespace to_do_angular_netcore.Server.Data.Migrations
                 name: "ToDo");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Category");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Users");
         }
     }
 }
