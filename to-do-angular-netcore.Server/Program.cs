@@ -50,7 +50,6 @@ builder.Services.AddAuthorization(option =>
 
 //Repository
 builder.Services.AddScoped<IDBRepository, DBRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Services
 builder.Services.AddScoped<IUserService, UserService>();
@@ -104,6 +103,7 @@ var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseCors("AllowOrigin");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
