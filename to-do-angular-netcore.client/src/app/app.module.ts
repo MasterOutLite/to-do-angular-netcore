@@ -21,6 +21,10 @@ import {ToDoPageComponent} from './page/to-do-page/to-do-page.component';
 import {LayoutComponent} from './Layout/layout/layout.component';
 import {routes} from "./routes";
 import { HomePageComponent } from './page/home-page/home-page.component';
+import { TestPageComponent } from './page/test-page/test-page.component';
+import { AddToDoModalComponent } from './components/add-to-do-modal/add-to-do-modal.component';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { ConfirmDeletionModalComponent } from './components/confirm-deletion-modal/confirm-deletion-modal.component';
 
 
 @NgModule({
@@ -38,6 +42,11 @@ import { HomePageComponent } from './page/home-page/home-page.component';
     ToDoPageComponent,
     LayoutComponent,
     HomePageComponent,
+    TestPageComponent,
+    AddToDoModalComponent,
+    AddCategoryComponent,
+    ConfirmDeletionModalComponent,
+
   ],
   imports: [
     RouterModule.forRoot(routes),

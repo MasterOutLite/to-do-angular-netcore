@@ -9,5 +9,6 @@ namespace to_do_angular_netcore.Server.Models
         public string Password { get; set; }
 
         public List<ToDo> toDos { get; set; }
+        public List<Category> categorys { get; set; }
     }
 }

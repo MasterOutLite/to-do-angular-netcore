@@ -1,40 +1,48 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
 import {ToDo} from "../type/to-do";
-import {BehaviorSubject} from "rxjs";
-import {UserService} from "./user.service";
+import {BehaviorSubject, first, Observable, tap} from "rxjs";
+import {HttpApi} from "./http-api";
+import {QueryTodo} from "../type/query-todo";
+import {PaginationResponse} from "../type/pagination-response";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDoService {
-  baseUrl: string = 'https://localhost:7232/';
-  toDo$ = new BehaviorSubject<ToDo[]>([]);
 
-  constructor(private http: HttpClient, private userService: UserService) {
+  private _currentState: BehaviorSubject<ToDo[]> = new BehaviorSubject<ToDo[]>([]);
+  public todo$: Observable<ToDo[]> = this._currentState.asObservable();
+
+  addToDo(add: ToDo) {
+    this._currentState.next([...this._currentState.value, add]);
   }
 
-  getToDo() {
+  constructor(private httpApi: HttpApi) {
+  }
 
-    const options = {
-      headers: {"Authorization": `Bearer ${this.userService.token()}`}
-    };
-
-    return this.http.get<ToDo[]>(this.baseUrl + 'todo', options);
+  getToDo(query?: QueryTodo) {
+    return this.httpApi.get<PaginationResponse<ToDo>>('todo', query).pipe(
+      tap(value => {
+        console.log(value);
+        this._currentState.next(value.data);
+      }), first());
   }
 
   postToDo(toDo: ToDo) {
-    const options = {
-      headers: {"Authorization": `Bearer ${this.userService.token()}`}
-    };
-
-    return this.http.post<ToDo>(this.baseUrl + 'todo', toDo, options)
+    return this.httpApi.post<ToDo>('todo', toDo).pipe(
+      tap(value => {
+        this.addToDo(value);
+      }))
   }
 
   putToDo(id: string | number, toDo: ToDo) {
-    const options = {
-      headers: {"Authorization": `Bearer ${this.userService.token()}`}
-    };
-    return this.http.put(`https://localhost:7232/todo/${id}`, toDo, options);
+    return this.httpApi.put(`todo/${id}`, toDo);
+  }
+
+  deleteToDo(id: number) {
+    return this.httpApi.delete(`todo/${id}`).pipe(tap(value => {
+      const newArr = this._currentState.value.filter(value => value.id != id);
+      this._currentState.next(newArr);
+    }));
   }
 }

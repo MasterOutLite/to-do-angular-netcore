@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using to_do_angular_netcore.Server.Dto;
 using to_do_angular_netcore.Server.Dto.Category;
 using to_do_angular_netcore.Server.Dto.ToDo;
 using to_do_angular_netcore.Server.Dto.User;
@@ -24,6 +25,7 @@ namespace to_do_angular_netcore.Server.MapperProfile
                  .ForMember(dest => dest.Title, opt => opt.Condition(src => !String.IsNullOrWhiteSpace(src.Title)));
 
             CreateMap<ToDo, ToDoDto>();
+            CreateMap<PaginationDto<ToDo>, PaginationDto<ToDoDto>>();
         }
     }
 }

@@ -7,7 +7,11 @@ namespace to_do_angular_netcore.Server.Models
     {       
         public string Name { get; set; }      
         public string Description { get; set; }
+
         public List<ToDo> ToDos { get; set; }
+
+        public long UserId {  get; set; }
+        public User User { get; set; }
 
     }
 }

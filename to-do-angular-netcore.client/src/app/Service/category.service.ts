@@ -1,49 +1,44 @@
-import {computed, Injectable, signal} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {Injectable} from "@angular/core";
 import {Category} from "../type/category";
-import {BehaviorSubject, catchError, delay, first, Observable, of, tap} from "rxjs";
-import {ToDo} from "../type/to-do";
-
-export type CategoryState = {
-  category: Category[];
-  isLoad: boolean;
-}
+import {BehaviorSubject, catchError, Observable, tap} from "rxjs";
+import {HttpApi} from "./http-api";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  baseUrl: string = 'https://localhost:7232/';
-  private state = signal<CategoryState>({
-    category: [],
-    isLoad: true,
-  });
-
-  category = computed(() => this.state().category)
-  isLoad = computed(() => this.state().isLoad)
+  private _currentState: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
+  public category$: Observable<Category[]> = this._currentState.asObservable();
 
 
-  constructor(private http: HttpClient) {
+  constructor(private httpApi: HttpApi) {
   }
 
   getCategory() {
-    if (this.state().category.length > 0) {
-      return of(this.state().category);
-    }
-
-    return this.http.get<Category[]>(this.baseUrl + 'category').pipe(
+    return this.httpApi.get<Category[]>('category').pipe(
       tap((categories) => {
-        this.addCategory(categories);
+        this._currentState.next(categories)
       }),
       catchError((error) => {
         console.error('Error fetching categories:', error);
-        throw error; // Throw the error to handle it in the calling code.
+        throw error;
       }),
-      first() // Take the first emitted value and complete the observable.
     );
   }
 
-  addCategory(add: Category[]) {
-    this.state.update(state => ({...state, category: [...state.category, ...add]}));
+  postCategory(category: Category){
+    return this.httpApi.post<Category>('category', category).pipe(
+      tap((data) => {
+        this.addCategory(data);
+      }),
+      catchError((error) => {
+        console.error('Error fetching categories:', error);
+        throw error;
+      }),
+    );
+}
+
+  addCategory(add: Category) {
+    this._currentState.next([...this._currentState.value, add])
   }
 }

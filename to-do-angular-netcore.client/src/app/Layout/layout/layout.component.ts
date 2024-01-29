@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
       <div class="min-vh-100 d-flex flex-column">
           <app-header></app-header>
-          <div class="flex-grow-1">
+          <div class="flex-grow-1 h-100">
               <ng-content></ng-content>
           </div>
           <app-footer></app-footer>

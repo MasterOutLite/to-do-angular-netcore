@@ -1,4 +1,6 @@
-﻿using to_do_angular_netcore.Server.Models;
+﻿using to_do_angular_netcore.Server.Dto;
+using to_do_angular_netcore.Server.Dto.ToDo;
+using to_do_angular_netcore.Server.Models;
 
 namespace to_do_angular_netcore.Server.Services.Interfaces
 {
@@ -8,6 +10,7 @@ namespace to_do_angular_netcore.Server.Services.Interfaces
         Task Update (ToDo dto, long userId);
         Task Delete (long id, long userId);
         Task<IEnumerable<ToDo>> GetAll (long userId);
+        Task<PaginationDto<ToDo>> GetAllByFilter (long userId, ToDoQueryFilter filter);
         Task<ToDo> GetById (long id, long userId);
     }
 }

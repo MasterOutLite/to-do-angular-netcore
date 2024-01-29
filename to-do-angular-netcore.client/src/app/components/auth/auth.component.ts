@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../Service/user.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
+import {AuthService} from "../../Service/auth.service";
 
 @Component({
   selector: 'app-auth',
@@ -47,7 +48,10 @@ export class AuthComponent implements OnInit {
   novalidate: boolean = false;
   isSignUp: boolean = false;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private router: Router) {
+  constructor(private userService: UserService,
+              private fb: FormBuilder,
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -61,11 +65,11 @@ export class AuthComponent implements OnInit {
   handleSubmit() {
     if (this.myForm.valid) {
       if (this.isSignUp) {
-        this.userService.signUp(this.myForm.value).subscribe(value => {
+        this.authService.signUp(this.myForm.value).subscribe(value => {
           this.router.navigate(['todo']);
         });
       } else {
-        this.userService.logIn(this.myForm.value).subscribe(value => {
+        this.authService.logIn(this.myForm.value).subscribe(value => {
           this.router.navigate(['todo']);
         });
       }

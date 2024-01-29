@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using to_do_angular_netcore.Server.Dto;
 using to_do_angular_netcore.Server.Dto.ToDo;
 using to_do_angular_netcore.Server.Exceptions;
 using to_do_angular_netcore.Server.Models;
@@ -10,7 +11,7 @@ using to_do_angular_netcore.Server.Services.Interfaces;
 namespace to_do_angular_netcore.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ToDoController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -44,13 +45,14 @@ namespace to_do_angular_netcore.Server.Controllers
 
         [HttpGet]
         [Authorize(Policy = "Auth")]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(IEnumerable<ToDoDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll ()
+        public async Task<IActionResult> GetAll ([FromQuery] ToDoQueryFilter queryFilter)
         {
             var authId = User.FindFirstValue("id")!;
             long userId = long.Parse(authId);
-            var entity = await _service.GetAll(userId);
-            return Ok(_mapper.Map<List<ToDoDto>>(entity));
+            var paginationToDo = await _service.GetAllByFilter(userId, queryFilter);
+            return Ok(_mapper.Map<PaginationDto<ToDoDto>>(paginationToDo));
         }
 
         [HttpPost]
@@ -79,6 +81,7 @@ namespace to_do_angular_netcore.Server.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "Auth")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update (long id, UpdateToDoDto dto)
@@ -103,6 +106,7 @@ namespace to_do_angular_netcore.Server.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "Auth")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete (long id)

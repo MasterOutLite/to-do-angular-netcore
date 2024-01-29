@@ -52,32 +52,6 @@ namespace to_do_angular_netcore.Server.Controllers
 
         }
 
-        [HttpPost("registration")]
-        [ProducesResponseType(typeof(AuthUser), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create (CreateUserDto dto)
-        {
-            User user = _mapper.Map<User>(dto);
-            AuthUser auth = await _service.Create(user);
-            return CreatedAtAction(nameof(GetById), new { auth.User.Id }, auth);
-        }
-
-        [HttpPost("login")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Authorization (LoginUser dto)
-        {
-            try
-            {
-                string token = _service.Authorazation(dto);
-                return Ok(new { token });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPut("{id}")]
         [Authorize(Policy = "Auth")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -114,6 +88,34 @@ namespace to_do_angular_netcore.Server.Controllers
                 return NoContent();
             }
             catch { return NotFound(); }
+        }
+
+        [HttpPost("registration")]
+        [AllowAnonymous]
+        [ProducesResponseType(typeof(AuthUser), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create (CreateUserDto dto)
+        {
+            User user = _mapper.Map<User>(dto);
+            AuthUser auth = await _service.Create(user);
+            return CreatedAtAction(nameof(GetById), new { auth.User.Id }, auth);
+        }
+
+        [HttpPost("login")]
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Authorization (LoginUser dto)
+        {
+            try
+            {
+                string token = _service.Authorazation(dto);
+                return Ok(new { token });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

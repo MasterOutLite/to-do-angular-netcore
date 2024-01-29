@@ -23,7 +23,7 @@ export class HomePageComponent {
   isAuth: boolean;
 
   constructor(private router: Router, private userService: UserService) {
-    this.isAuth = !!userService.user();
+    this.isAuth = !!userService.user$;
   }
 
   onClickToDo() {

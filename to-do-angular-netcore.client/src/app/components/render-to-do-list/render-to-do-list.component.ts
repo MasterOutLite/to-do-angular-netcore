@@ -1,46 +1,72 @@
-import {Component, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ToDo} from "../../type/to-do";
+import {ToDoService} from "../../Service/to-do.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-render-to-do-list',
   template: `
-      <div class="pt-2">
-          <h3>To Do List</h3>
-          <div>
-              <div class="row text-center pb-2">
-                  <div class="col-1 col-sm-1">
-                      ID
-                  </div>
-
-                  <div class="col-2 col-sm-1">
-                      Done
-                  </div>
-
-                  <div class="col-3 col-sm-2">
-                      Category
-                  </div>
-
-                  <div class="col">
-                      Title
-                  </div>
-
-                  <div class="col">
-                      Description
-                  </div>
-
-              </div>
-              <div class="row g-3">
-                  <app-render-to-do
-                          *ngFor="let toDo of toDos"
-                          [toDo]="toDo">
-                  </app-render-to-do>
-              </div>
-          </div>
+    <div class="pt-2 d-flex flex-column">
+      <h3>To Do List</h3>
+      <div class="row g-3">
+        <div class="card p-2" *ngFor="let toDo of toDosOb$ | async | slice: 0:countItems; let i = index;">
+          <app-render-to-do
+            [toDo]="toDo">
+          </app-render-to-do>
+        </div>
       </div>
+
+      <ng-container *ngIf="showPagination">
+        <ngb-pagination
+          class="d-flex justify-content-center mt-4 "
+          [collectionSize]="totalItems"
+          [(page)]="page"
+          (pageChange)="selectPage($event)"
+          [maxSize]="5"
+          [rotate]="true"
+          [ellipses]="false"
+          [boundaryLinks]="true"
+        />
+      </ng-container>
+
+    </div>
   `,
   styleUrl: './render-to-do-list.component.css'
 })
-export class RenderToDoListComponent {
-  @Input() toDos: ToDo[];
+export class RenderToDoListComponent implements OnInit {
+  toDosOb$: Observable<ToDo[]>;
+  showPagination: boolean = false;
+  page: number = 1;
+  totalItems: number = 1;
+  countItems: number = 10;
+
+  constructor(private toDoService: ToDoService) {
+  }
+
+  ngOnInit(): void {
+    this.toDosOb$ = this.toDoService.todo$;
+    this.toDoService.getToDo().subscribe(value => {
+      this.page = value.page + 1;
+      this.totalItems = value.total;
+      this.showPagination =  this.totalItems / this.countItems > 1;
+      console.log(this.countItems, this.page, this.totalItems);
+    });
+  }
+
+  selectPage(page: number) {
+    this.toDoService.getToDo({page: this.page - 1, count: this.countItems}).subscribe(
+      value => {
+        this.page = value.page + 1;
+        this.totalItems = value.total;
+        console.log(this.countItems, this.page, this.totalItems);
+      }
+    );
+  }
+
+  formatInput(input: HTMLInputElement) {
+    const FILTER_PAG_REGEX = /[^0-9]/g;
+    input.value = input.value.replace(FILTER_PAG_REGEX, '');
+  }
+
 
 }

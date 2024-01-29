@@ -22,7 +22,7 @@ namespace to_do_angular_netcore.Server.Helper
                  new Claim(ClaimTypes.Email, user.Email),
 
                 }),
-                Expires = DateTime.UtcNow.AddHours(24),
+                Expires = DateTime.UtcNow.AddDays(3),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
