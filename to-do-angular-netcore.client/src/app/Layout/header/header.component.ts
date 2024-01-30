@@ -35,7 +35,7 @@ import {Observable} from "rxjs";
                       </div>
 
                     <span *ngIf="!!user" class="navbar-text me-3">
-                        User: {{user?.unique_name}}
+                        User: {{user.unique_name}}
                      </span>
 
                       <button *ngIf="user" type="button" class="btn btn-outline-secondary"

@@ -9,10 +9,9 @@ import {AddToDoModalComponent} from "../../components/add-to-do-modal/add-to-do-
 @Component({
   selector: 'app-to-do-page',
   template: `
-    <app-container>
-      <button class="btn btn-lg btn-outline-primary " (click)="open()">Add new ToDo</button>
-      <app-render-to-do-list></app-render-to-do-list>
-    </app-container>
+      <div class="container-md">
+          <app-render-to-do-list></app-render-to-do-list>
+      </div>
   `,
   styleUrl: './to-do-page.component.css'
 })
@@ -31,18 +30,5 @@ export class ToDoPageComponent implements OnInit {
     this.user$ = this.userService.token$;
   }
 
-  open() {
-    const modalRef = this.modalService.open(AddToDoModalComponent, {fullscreen: "sm", size: "xl", scrollable: true});
-  }
 
-  private getDismissReason(reason: any): string {
-    switch (reason) {
-      case ModalDismissReasons.ESC:
-        return 'by pressing ESC';
-      case ModalDismissReasons.BACKDROP_CLICK:
-        return 'by clicking on a backdrop';
-      default:
-        return `with: ${reason}`;
-    }
-  }
 }

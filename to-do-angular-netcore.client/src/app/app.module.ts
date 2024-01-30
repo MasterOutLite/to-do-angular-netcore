@@ -25,6 +25,11 @@ import { TestPageComponent } from './page/test-page/test-page.component';
 import { AddToDoModalComponent } from './components/add-to-do-modal/add-to-do-modal.component';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { ConfirmDeletionModalComponent } from './components/confirm-deletion-modal/confirm-deletion-modal.component';
+import { FilterToDoComponent } from './components/filter-to-do/filter-to-do.component';
+import {
+  CategoriesListComponent,
+  CategoriesListModalComponent
+} from './components/categories-list/categories-list.component';
 
 
 @NgModule({
@@ -46,7 +51,9 @@ import { ConfirmDeletionModalComponent } from './components/confirm-deletion-mod
     AddToDoModalComponent,
     AddCategoryComponent,
     ConfirmDeletionModalComponent,
-
+    FilterToDoComponent,
+    CategoriesListComponent,
+    CategoriesListModalComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -54,7 +54,7 @@ namespace to_do_angular_netcore.Server.Services
             Expression<Func<ToDo, object>> keyFilter = filter.SortColumn switch
             {
                 ToDoColumn.Title => o => o.Title,
-                ToDoColumn.Category => o => o.Category,
+                ToDoColumn.Category => o => o.CategoryId,
                 _ => o => o.Id,
             };
 

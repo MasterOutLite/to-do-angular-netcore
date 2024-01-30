@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-auth-page',
   template: `
-      <div class="mx-auto pt-5" style="max-width: 600px">
+      <div class="container pt-5 justify-content-center" style="max-width: 600px">
           <app-auth></app-auth>
       </div>
   `,

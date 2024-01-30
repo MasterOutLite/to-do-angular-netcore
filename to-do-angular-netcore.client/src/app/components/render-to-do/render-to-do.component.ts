@@ -11,68 +11,68 @@ import {ConfirmDeletionModalComponent} from "../confirm-deletion-modal/confirm-d
 @Component({
   selector: 'app-render-to-do',
   template: `
-    <div class="row text-center g-3">
+      <div class="row text-center g-3">
 
-      <div class="col-6">
-        <div class="text-start">
-          <label for="titleFormControlInput-{{toDo.id}}" class="form-label ">Title</label>
-          <input type="text" [(ngModel)]="toDo.title" class="form-control"
-                 id="titleFormControlInput-{{toDo.id}}"
-                 (change)="handleOnEdit()" placeholder="Title">
-        </div>
-      </div>
+          <div class="col-6">
+              <div class="text-start">
+                  <label for="titleFormControlInput-{{toDo.id}}" class="form-label ">Title</label>
+                  <input type="text" [(ngModel)]="toDo.title" class="form-control"
+                         id="titleFormControlInput-{{toDo.id}}"
+                         (change)="handleOnEdit()" placeholder="Title">
+              </div>
+          </div>
 
-      <div class="col-1 ">
-        <div class="text-start d-flex flex-column align-items-center">
-          <label for="flexCheckDefault-{{toDo.id}}" class="form-label ">Done</label>
-          <input class="form-check-input mt-2" type="checkbox" [(ngModel)]="toDo.done" (change)="handleOnEdit()"
-                 id="flexCheckDefault-{{toDo.id}}">
-        </div>
-      </div>
+          <div class="col-1 ">
+              <div class="text-start d-flex flex-column align-items-center">
+                  <label for="flexCheckDefault-{{toDo.id}}" class="form-label ">Done</label>
+                  <input class="form-check-input mt-2" type="checkbox" [(ngModel)]="toDo.done" (change)="handleOnEdit()"
+                         id="flexCheckDefault-{{toDo.id}}">
+              </div>
+          </div>
 
-      <div class="col">
-        <div class="text-start">
-          <label for="validationServer-{{toDo.id}}" class="form-label ">Category</label>
-          <select (change)="handleOnEdit()" [ngModel]="toDo.categoryId"
-                  (ngModelChange)="onEditCategoryId($event)"
-                  class="form-select" id="validationServer-{{toDo.id}}"
-                  required>
-            <option *ngFor="let item of category$| async" value="{{item.id}}"
-                    [selected]="item.id == toDo.categoryId">
-              {{item.name}}
-            </option>
-          </select>
-        </div>
-      </div>
+          <div class="col">
+              <div class="text-start">
+                  <label for="validationServer-{{toDo.id}}" class="form-label ">Category</label>
+                  <select (change)="handleOnEdit()" [ngModel]="toDo.categoryId"
+                          (ngModelChange)="onEditCategoryId($event)"
+                          class="form-select" id="validationServer-{{toDo.id}}"
+                          required>
+                      <option *ngFor="let item of category$| async" value="{{item.id}}"
+                              [selected]="item.id == toDo.categoryId">
+                          {{item.name}}
+                      </option>
+                  </select>
+              </div>
+          </div>
 
-      <div class="col-12">
-        <div class="text-start">
-          <label for="descriptionFormControlInput-{{toDo.id}}" class="form-label ">Description</label>
-          <textarea type="text" [(ngModel)]="toDo.description" class="form-control"
-                    id="descriptionFormControlInput-{{toDo.id}}"
-                    (change)="handleOnEdit()"
-                    placeholder="Description" rows="1">
+          <div class="col-12">
+              <div class="text-start">
+                  <label for="descriptionFormControlInput-{{toDo.id}}" class="form-label ">Description</label>
+                  <textarea type="text" [(ngModel)]="toDo.description" class="form-control"
+                            id="descriptionFormControlInput-{{toDo.id}}"
+                            (change)="handleOnEdit()"
+                            placeholder="Description" rows="1">
             </textarea>
-        </div>
-      </div>
+              </div>
+          </div>
 
-      <div class="col text-end">
-        <div class="btn-group" role="group" aria-label="Basic example">
-          <button type="button" class="btn"
-                  (click)="handleUpdate()"
-                  [disabled]="!isEdit"
-                  [ngClass]="{'btn-primary': isEdit, 'btn-danger': isError}"
-          >
-            Update
-          </button>
-          <button type="button"
-                  (click)="handleDelete()"
-                  class="btn btn-danger">
-            Delete
-          </button>
-        </div>
+          <div class="col text-end">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn"
+                          (click)="handleUpdate()"
+                          [disabled]="!isEdit"
+                          [ngClass]="{'btn-primary': isEdit, 'btn-danger': isError}"
+                  >
+                      Update
+                  </button>
+                  <button type="button"
+                          (click)="handleDelete()"
+                          class="btn btn-danger">
+                      Delete
+                  </button>
+              </div>
+          </div>
       </div>
-    </div>
   `,
   styleUrl: './render-to-do.component.css'
 })

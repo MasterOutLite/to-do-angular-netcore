@@ -3,46 +3,55 @@ import {ToDo} from "../type/to-do";
 import {BehaviorSubject, first, Observable, tap} from "rxjs";
 import {HttpApi} from "./http-api";
 import {QueryTodo} from "../type/query-todo";
-import {PaginationResponse} from "../type/pagination-response";
+import {Pagination, PaginationResponse} from "../type/pagination-response";
+
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ToDoService {
 
-  private _currentState: BehaviorSubject<ToDo[]> = new BehaviorSubject<ToDo[]>([]);
-  public todo$: Observable<ToDo[]> = this._currentState.asObservable();
+    private _currentState: BehaviorSubject<ToDo[]> = new BehaviorSubject<ToDo[]>([]);
+    public todo$: Observable<ToDo[]> = this._currentState.asObservable();
+    private _paginationState: BehaviorSubject<Pagination> = new BehaviorSubject<Pagination>({page: 0, total: 0});
+    public paginationState$: Observable<Pagination> = this._paginationState.asObservable();
 
-  addToDo(add: ToDo) {
-    this._currentState.next([...this._currentState.value, add]);
-  }
+    public query: QueryTodo = {};
 
-  constructor(private httpApi: HttpApi) {
-  }
+    addToDo(add: ToDo) {
+        this._currentState.next([...this._currentState.value, add]);
+    }
 
-  getToDo(query?: QueryTodo) {
-    return this.httpApi.get<PaginationResponse<ToDo>>('todo', query).pipe(
-      tap(value => {
-        console.log(value);
-        this._currentState.next(value.data);
-      }), first());
-  }
+    constructor(private httpApi: HttpApi) {
+    }
 
-  postToDo(toDo: ToDo) {
-    return this.httpApi.post<ToDo>('todo', toDo).pipe(
-      tap(value => {
-        this.addToDo(value);
-      }))
-  }
+    getToDo(query?: QueryTodo) {
+        if (query)
+            this.query = ({...this.query, ...query})
+        console.log('query', this.query);
+        return this.httpApi.get<PaginationResponse<ToDo>>('todo', this.query).pipe(
+            tap(value => {
+                console.log(value);
+                this._currentState.next(value.data);
+                this._paginationState.next({total: value.total, page: value.page});
+            }), first());
+    }
 
-  putToDo(id: string | number, toDo: ToDo) {
-    return this.httpApi.put(`todo/${id}`, toDo);
-  }
+    postToDo(toDo: ToDo) {
+        return this.httpApi.post<ToDo>('todo', toDo).pipe(
+            tap(value => {
+                this.addToDo(value);
+            }))
+    }
 
-  deleteToDo(id: number) {
-    return this.httpApi.delete(`todo/${id}`).pipe(tap(value => {
-      const newArr = this._currentState.value.filter(value => value.id != id);
-      this._currentState.next(newArr);
-    }));
-  }
+    putToDo(id: string | number, toDo: ToDo) {
+        return this.httpApi.put(`todo/${id}`, toDo);
+    }
+
+    deleteToDo(id: number) {
+        return this.httpApi.delete(`todo/${id}`).pipe(tap(value => {
+            const newArr = this._currentState.value.filter(value => value.id != id);
+            this._currentState.next(newArr);
+        }));
+    }
 }

@@ -21,7 +21,6 @@ import {tap} from "rxjs";
       </div>
       <div class="col-12 text-end">
         <button class="btn btn-primary ms-auto" type="submit">Add Category</button>
-
       </div>
     </form>
   `,

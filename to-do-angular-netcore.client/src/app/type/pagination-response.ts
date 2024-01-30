@@ -1,5 +1,10 @@
-export type PaginationResponse<T> = {
-  page: number;
-  total: number;
-  data: T[];
+export type Pagination = {
+    page: number;
+    total: number;
+}
+
+
+export type PaginationResponse<T> = Pagination & {
+    data: T[];
 };
+
