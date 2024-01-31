@@ -32,8 +32,8 @@ namespace to_do_angular_netcore.Server.Services
 
         public async Task Delete (long id, long userId)
         {
-            await GetById(id, userId);
-            await _repository.Delete<ToDo>(id);
+            ToDo toDo = await GetById(id, userId) ?? throw new NotFoundException("Not found ToDo");
+            _repository.Remove(toDo);
             await _repository.SaveChangesAsync();
         }
 
@@ -55,6 +55,7 @@ namespace to_do_angular_netcore.Server.Services
             {
                 ToDoColumn.Title => o => o.Title,
                 ToDoColumn.Category => o => o.CategoryId,
+                ToDoColumn.Done => o => o.Done,
                 _ => o => o.Id,
             };
 

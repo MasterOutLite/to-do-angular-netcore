@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Category} from "../type/category";
 import {BehaviorSubject, catchError, Observable, tap} from "rxjs";
 import {HttpApi} from "./http-api";
+import contains from "@popperjs/core/lib/dom-utils/contains";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ export class CategoryService {
 
 
   constructor(private httpApi: HttpApi) {
+  }
+
+  addCategory(add: Category) {
+    this._currentState.next([...this._currentState.value, add])
   }
 
   getCategory() {
@@ -26,7 +31,7 @@ export class CategoryService {
     );
   }
 
-  postCategory(category: Category){
+  postCategory(category: Category) {
     return this.httpApi.post<Category>('category', category).pipe(
       tap((data) => {
         this.addCategory(data);
@@ -36,9 +41,17 @@ export class CategoryService {
         throw error;
       }),
     );
-}
-
-  addCategory(add: Category) {
-    this._currentState.next([...this._currentState.value, add])
   }
+
+
+  deleteCategory(id: number) {
+    return this.httpApi.delete(`category/${id}`).pipe(tap(
+      value => {
+        const newArr = this._currentState.value.filter(category => category.id != id);
+        this._currentState.next(newArr);
+      }
+    ));
+  }
+
+
 }

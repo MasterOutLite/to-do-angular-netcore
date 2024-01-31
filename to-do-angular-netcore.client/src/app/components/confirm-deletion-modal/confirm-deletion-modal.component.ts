@@ -6,7 +6,7 @@ import {ToDoService} from "../../Service/to-do.service";
   selector: 'app-confirm-deletion-modal',
   template: `
     <div class="modal-header">
-      <h4 class="modal-title">You wont delete this?</h4>
+      <h4 class="modal-title">Do you want to delete this?</h4>
       <button type="button" class="btn-close" aria-label="Close"
               (click)="activeModal.dismiss('Cross click')"></button>
     </div>

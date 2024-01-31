@@ -15,17 +15,16 @@ import {FooterComponent} from './Layout/footer/footer.component';
 import {HeaderComponent} from './Layout/header/header.component';
 import {NgOptimizedImage} from "@angular/common";
 import {AuthComponent} from './components/auth/auth.component';
-import {RouterModule, Routes} from "@angular/router";
+import {RouterModule} from "@angular/router";
 import {AuthPageComponent} from './page/auth-page/auth-page.component';
 import {ToDoPageComponent} from './page/to-do-page/to-do-page.component';
 import {LayoutComponent} from './Layout/layout/layout.component';
 import {routes} from "./routes";
-import { HomePageComponent } from './page/home-page/home-page.component';
-import { TestPageComponent } from './page/test-page/test-page.component';
-import { AddToDoModalComponent } from './components/add-to-do-modal/add-to-do-modal.component';
-import { AddCategoryComponent } from './components/add-category/add-category.component';
-import { ConfirmDeletionModalComponent } from './components/confirm-deletion-modal/confirm-deletion-modal.component';
-import { FilterToDoComponent } from './components/filter-to-do/filter-to-do.component';
+import {HomePageComponent} from './page/home-page/home-page.component';
+import {AddToDoModalComponent} from './components/add-to-do-modal/add-to-do-modal.component';
+import {AddCategoryComponent} from './components/add-category/add-category.component';
+import {ConfirmDeletionModalComponent} from './components/confirm-deletion-modal/confirm-deletion-modal.component';
+import {FilterToDoComponent} from './components/filter-to-do/filter-to-do.component';
 import {
   CategoriesListComponent,
   CategoriesListModalComponent
@@ -47,7 +46,6 @@ import {
     ToDoPageComponent,
     LayoutComponent,
     HomePageComponent,
-    TestPageComponent,
     AddToDoModalComponent,
     AddCategoryComponent,
     ConfirmDeletionModalComponent,

@@ -19,8 +19,9 @@ namespace to_do_angular_netcore.Server.Services
 
         public async Task Delete (long id, long userId)
         {
-            await GetById(id, userId);
-            await _repository.Delete<Category>(id);
+            var category = await GetById(id, userId);
+            _repository.Remove(category);
+            await _repository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Category>> GetAll (long userId)
@@ -32,6 +33,7 @@ namespace to_do_angular_netcore.Server.Services
         public async Task<Category> GetById (long id, long userId)
         {
             Category res = await _repository.Get<Category>(o => o.Id == id && o.UserId == userId)
+                .Include(e => e.ToDos)
                 .FirstOrDefaultAsync() ?? throw new NotFoundException("CategoryId is bad");
             return res;
         }

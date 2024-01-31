@@ -52,7 +52,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
           <div class="col text-end mt-0">
               <hr/>
               <button class="btn btn-primary" type="submit">Add To Do</button>
-              <button class="btn btn-outline-dark ms-3" (click)="activeModal.close()">Close</button>
+              <button class="btn btn-outline-secondary ms-3" (click)="activeModal.close()">Close</button>
           </div>
       </form>
   `,
